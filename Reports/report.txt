@@ -1,0 +1,13 @@
+I think that feature engineering could help establish additional value using exploratory data analysis in this data set in two ways.
+    1)  The ActSceneLine can could be separated into three separate columns: Act, Scene, and Line. By splitting this string column,
+        which has the form X.X.X, you will no longer have to worry about special string formatting. Also, the values in between the
+        periods (X in my example) are all integers, so instead of treating integers as strings, we can treat them as integers, which
+        will make them easier to sort and could potentially make it easier to notice patterns when it comes time to begin data analysis.
+    2)  The Dataline column can be eliminated. The Dataline column is just a counter for how many rows are in the data set. Since the
+        number of rows, and moreover the specific number of a given row in the data, has no relation to what is contained in the row
+        (or dataset), it should be removed so that it is not considered when performing exploratory data analysis. This will reduce the
+        dimensionality of the data set to help with speed and memory management when working with the dataset. Also, pandas automatically
+        keeps track of the number of rows/row number, so there is no reason to keep and/or include this column in the data set.
+    3)  Add columns/labels for each of the players such that the data is numeric-binary. This will aid in classification since categorical
+        data cannot be classified. It will also help in grouping and feature extraction of other data. For example, if a player's name
+        is Hamlet, make a column IsHamlet, where the value will be 1 if the player is Hamlet, and 0 if it is not.

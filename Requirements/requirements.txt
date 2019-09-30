@@ -1,0 +1,16 @@
+Requirements:
+
+    Tools:
+        Jupyter Notebooks
+
+    Python:
+        Python 3.7 (Anaconda)
+
+    Libraries:
+        pandas
+
+    File Structure:
+        Provided, no need to modify file paths
+
+    Necessary Files:
+        Shakespeare_data.csv
