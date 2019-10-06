@@ -1,16 +1,61 @@
-I think that feature engineering could help establish additional value using exploratory data analysis in this data set in two ways.
+I think that feature engineering could help establish additional value using exploratory data analysis in this data set in a number
+of ways.
     1)  The ActSceneLine can be separated into three separate columns: Act, Scene, and Line. By splitting this string column,
         which has the form X.X.X, you will no longer have to worry about special string formatting. Also, the values in between the
         periods (X in my example) are all integers, so instead of treating integers as strings, we can treat them as integers, which
-        will make them easier to sort and could potentially make it easier to notice patterns when it comes time to begin data analysis.
+        will make them readily available to feed into the classifier.
     2)  The Dataline column can be eliminated. The Dataline column is just a counter for how many rows are in the data set. Since the
         number of rows, and moreover the specific number of a given row in the data, has no relation to what is contained in the row
-        (or dataset), it should be removed so that it is not considered when performing exploratory data analysis. This will reduce the
-        dimensionality of the data set to help with speed and memory management when working with the dataset. Also, pandas automatically
-        keeps track of the number of rows/row number, so there is no reason to keep and/or include this column in the data set.
+        (or dataset), it should be removed so that it is not considered when performing exploratory data analysis. This will als0 reduce
+        the dimensionality of the data set to help with speed and memory management when working with the data set. Also, pandas already
+        automatically keeps track of the number of rows/row number, so there is no reason to keep and/or include this column in the data set.
     3)  Convert the Play and Player columns from categorical data to numeric data. For example, give each play its own number and give each
         player his or her own number. By converting from categorical to numeric, it will be easier for the classification model to interpret
         and accurately classify the data set.
     4)  Remove punctuation from the PlayerLine column. Although the PlayerLine column is categorical - it is a string representing a
         sentence that the Player speaks during the play - this PlayerLine information can still be useful to the classification model;
         however, punctuation is not unique to any player and could affect the classification model negatively.
+
+Process
+    1.  Read in the data set
+    2.  Remove the Dataline column from the data set since the row numbers are not important nor relevant to the data contained in the
+        data set.
+    3.  Remove the the lines of the data set where PlayerLine, ActSceneLine, and Player are NaN. Lines where these fields are NaN represent
+        stage directions in the plays and are not important for classifying the Players
+    4.  Split the ActSceneLine column into three separate columns: Act, Scene, Line, and then remove the original ActSceneLine column. By
+        splitting this column in this manner, we split a hard-to-use string-valued column into mulitple easy-to-use integer-valued columns.
+        This will make it easier for classification later on.
+    5.  Convert the names of all the Plays to numbers and then replace the original string-valued Play column with the new integer-valued
+        Play column. This will make it easier for classification later on.
+    6.  Convert the names of all the Players to numbers and then replace the original string-valued Player column with the new integer-valued
+        Player column. This will make it easier for classification later on.
+    7.  Remove all punctuation from the PlayerLine column. Certain words in the PlayerLine column might be unique to Players; however,
+        punctuation such as commas and periods are never going to be unique to Players. Thus, it is best to remove the punctuation to make it
+        easier for the classifier to interpret the data, and also to make sure the punctuation does not negatively affect the classification
+        accuracy.
+    8.  Select a random sample from the dataset to use in the classifier. Processing the entire data set uses a lot of RAM and was crashing
+        the Python kernel due to memory limitations. I chose to use a sample of 45% of the data set to train the classifier, as this was all
+        that my computer would allow me to process without throwing memory exceptions.
+    9.  Transform the strings of the PlayerLine column to floats for classification. Classifiers only really understand numbers, so I had
+        Scikit Learn's preprocessing module transform the PlayerLine column into a classification-useable format.
+    10. Create the features and labels for classification. Features include all the attributes of the table except for the result we want. So
+        features of this classification model are: PlayerLineNumber, Act, Scene, Line, Play, and PlayerLine. The label is the resilt we want
+        from the classification and for this project is the Player.
+    11. Split the labels and features into testing and training sets. The training sets will be used to train the classifier and the testing sets
+        will be used to test the accuracy of the predictions that the classifier makes. For this project I chose to use a ratio of 80/20; 80% of
+        the data is used for training the classifier and 20% of the data is used for testing the classifier.
+    12. Create the classifier. For this project, I decided to try a Random Forest Classifier because they are known for being fast and accurate.
+        I used Scikit Learn's RandomForestClassifier() to implement my random forest and used 100 trees. I let the method auto-decide the number
+        of features to use for each of the trees.
+    13. Train the Random Forest Classifier, predict the labels, test the classifier, and calculate and display the accuracy. I trained the
+        classifier using the training sets I created above. Once the classifier was trained, I used the test features set to try to predict
+        the labels correctly. I then compared the classifier's predictions to the test labels and computed the accuracy.
+
+Results
+    Using a Random Forest Classifier with 100 trees, I was able to classify the Player based off of the rest of the data set with 76.9% accuracy.
+
+    As a first try at clasifying this data set, I think that 76.9% accuracy is fairly respectable; however, one way in which I think that the
+    accuracy could be improved is by using the entire data set. I was unable to use the entire data set when classifiying due to memory constraints
+    on my system, but if I had been able to use the enitre data set in the Random Forest Classifier, I think the accuracy would have been higher
+    because the classifier would have had more training cases to learn from and therefore would have been able to better hone-in on the features
+    that identify Players.

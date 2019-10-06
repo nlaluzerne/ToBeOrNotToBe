@@ -8,9 +8,23 @@ Requirements:
 
     Libraries:
         pandas
+        string
+        sklearn
+            preprocessing
+            metrics
+        sklearn.model_selection
+        sklearn.ensemble
+
+    Classification Model:
+        Random Forest Classifier
 
     File Structure:
         Provided, no need to modify file paths
 
     Necessary Files:
         Shakespeare_data.csv
+
+    Memory:
+        Due to the size of the data set, a sample size of 45% of the original data set was used in classification. Should your system throw
+        memory errors when trying to interpret Cell 15, you may need to adjust the sample size of the data set to use less data. You can adjust
+        this value in Cell 10.
